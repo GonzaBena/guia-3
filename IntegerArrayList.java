@@ -1,31 +1,58 @@
-package ar.edu.ottokrause.psr.collections;
-import java.util.ArrayList;
-/*
-Crear una clase IntegerArrayList que implemente la interfaz IntegerList utilizando arreglos como el
-medio de almacenamiento subyacente. Al momento de agregarse un elemento de una instancia
-de IntegerArrayList, el arreglo que contiene los elementos debe ser copiado a uno nuevo que
-tenga lugar para almacenar el nuevo elemento que se desea agregar.
-*/
-public class IntegerArrayList implements IntegerList{
-    
-    private int tamañoInicial;
-    Integer[] array;
+package ar.edu.ottokrause.psr;
 
-    public IntegerArrayList() {
-        this.tamañoInicial = 50;
-        array = new Integer[tamañoInicial];
+public class IntegerArrayList implements IntegerList {
+
+    private int[] elements;
+
+    public IntegerArrayList(int size) {
+        this.elements = new int[size];
+    }
+
+    public Integer set(int index, int element) {
+        //Ingresa los datos a la variable
+        return this.elements[index] = element;
+    }
+
+    public void resize(int newSize) {
+        //Define arreglo de integer newElements y se le copia los valores de este a el arreglo integer newSize
+        int[] newElements = new int[newSize];
+        System.arraycopy(this.elements, 0, newElements, 0, Math.min(this.size(), newSize));
+        this.elements = newElements;
     }
 
     @Override
     public boolean add(Integer element) {
+        try {
+            this.resize(this.size() + 1);
+            this.elements[this.elements.length - 1] = element;
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    @Override
+    public void add(int index, Integer element) {
+        this.resize(this.size() + 1);
+        int longCorrimientos = this.size() - 1 - index;
+        System.arraycopy(this.elements, index, this.elements, index + 1, longCorrimientos);
+        this.elements[index] = element;
+    }
+
+    @Override
+    public boolean addAll(IntegerList aList) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addAll(int index, IntegerList aList) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < array.length; i++) {
-            this.array[i] = null;
-        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -35,43 +62,52 @@ public class IntegerArrayList implements IntegerList{
 
     @Override
     public Integer get(int index) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == index) {
-                return i;
-            }
-        }
-        return null;        
+        //Lee los datos de la variable
+        return this.elements[index];
+    }
+
+    @Override
+    public int indexOf(Integer element) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean isEmpty() {
-        return array[0] == null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int lastIndexOf(Integer element) {
-        Integer count = null;
-        for (int i = array.length; i > 0; i--) {
-            if (array[i] == element) {
-                return i;
-            }
-        }
-        return -1;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int remove(int index) {
-        array[index]
-    }
-    @Override
-    public int size() {
-        return this.array.length;
+        int res = this.elements[index];
+        System.arraycopy(this.elements, index + 1, this.elements, index, this.size() - 1 - index);
+        this.resize(this.size() - 1);
+        return res;
     }
 
     @Override
-    public Object[] toArray() {
+    public void set(int index, Integer element) {
+        this.elements[index] = element;
+    }
+
+    @Override
+    public int size() {
+        //Devuelve el tamaño de elements
+        return this.elements.length;
+    }
+
+    @Override
+    public IntegerList subList(int fromIndex, int toIndex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
+
+    @Override
+    public int[] toArray() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
